@@ -5,6 +5,10 @@
  * @brief baseMessage class used for sending, receiving and storing generic message details 
  */
 
+#ifndef _BASEMESSAGE_
+
+#define _BASEMESSAGE_
+
 #ifdef _WIN32
 #include <winsock.h>
 #else
@@ -93,3 +97,6 @@ class baseMessage{
         virtual void receiveMessage(const ustring8_t &net_messagein);     
 
 };
+
+#endif //_BASEMESSAGE_
+

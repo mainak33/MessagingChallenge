@@ -76,7 +76,7 @@ void derivedMessage::receiveMessage(ustring8_t net_messagein){
     baseMessage::receiveMessage(net_messagein);
     
     //Throw exception if payload length is not 72 bits (9 bytes)
-    if (this->payload_length != (uint8_t) 72){
+    if (this->payload_length != ntohl((uint32_t) 72)){
         throw std::invalid_argument("Invalid payload. A valid payload of a derived message must be 72 bits (9 bytes) in length");
     }
 
