@@ -1,8 +1,9 @@
 /**
- * @file: testHarness.cpp
+ * @file: test.cpp
  * @author: Mainak Mitra
  * 
  * @brief derivedMessage class members implementation
  */
 
-#include "testHarness.h"
+#include "test.h"
+
