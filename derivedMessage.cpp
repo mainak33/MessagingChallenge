@@ -67,7 +67,7 @@ ustring8_t derivedMessage::sendMessage(const uint16_t &message_IDin, const uint8
 //Receive Message and Update members (fields)
 void derivedMessage::receiveMessage(ustring8_t net_messagein){
     
-    //Throw exception if message length is not 136 bits (17 bytes)
+    //Throw exception if message length is not  17 bytes (136 bits)
     if (net_messagein.size() != (uint8_t) 17){
         throw std::invalid_argument("Invalid message. A valid derived message must be 136 bits (17 bytes) in length");
     }
