@@ -84,10 +84,10 @@ ustring8_t baseMessage::sendMessage(const uint16_t &message_IDin, const uint8_t 
 
 //Receive Message and Update members (fields)
 void baseMessage::receiveMessage(const ustring8_t &net_messagein){
-    this->message_ID = ntohs(net_messagein[0] << 8 | net_messagein[1]);
+    this->message_ID = net_messagein[0] << 8 | net_messagein[1]; //Store in Network Byte Order
     this->sender_ID = net_messagein[2];
     this->receiver_ID = net_messagein[3];
-    this->payload_length = ntohl(net_messagein[4] << 24 | net_messagein[5] << 16 | net_messagein[6] << 8 | net_messagein[7]);
+    this->payload_length = net_messagein[4] << 24 | net_messagein[5] << 16 | net_messagein[6] << 8 | net_messagein[7]; //Store in Network Byte Order
     if(payload_length > 0){
         uint32_t payload_length_bytes = nbits_to_nbytes(this->payload_length);
         this->payload.resize(payload_length_bytes);

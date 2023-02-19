@@ -5,3 +5,4 @@
  * @brief derivedMessage class members implementation
  */
 
+#include "testHarness.h"
