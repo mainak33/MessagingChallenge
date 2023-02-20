@@ -1,4 +1,4 @@
-# include"test.h"
+# include"testMessage.h"
 # include"printMessage.h"
 
 
@@ -29,33 +29,33 @@ int main(){
     
     //Test 1: baseMessage with known inputs  (No errors expected)
     std::cout << " -- Test 1 : baseMessage with known inputs --"  << std::endl;
-    test tester = test(1,false);
+    testMessage tester = testMessage(1,false);
     tester.test_baseMessage(msga,msgb,300,154,6,40,(uint8_t *)"abcde");
-    tester.print_last_test_result(test::E_Error::none);
+    tester.print_last_test_result(testMessage::E_Error::none);
     
     //Test 2: derivedMessage with known inputs (No errors expected)
     std::cout << " -- Test 2 : derivedMessage with known inputs --"  << std::endl;
     tester.test_ID = 2;
     tester.test_derivedMessage(msgc,msgd,1000,253,255,1,0,55,ustring8_t((uint8_t *)"abcdefgh"));
-    tester.print_last_test_result(test::E_Error::none);
+    tester.print_last_test_result(testMessage::E_Error::none);
 
     //Test 3: derivedMessage with incorrect lights 8 > 1 (exception expected)
     std::cout << " -- Test 3 : derivedMessage with incorrect action --"  << std::endl;
     tester.test_ID =  3;
     tester.test_derivedMessage(msgc,msgc,1000,253,255,8,0,23,ustring8_t((uint8_t *)"abcdefgh"));
-    tester.print_last_test_result(test::E_Error::exception);
+    tester.print_last_test_result(testMessage::E_Error::exception);
 
     //Test 4: derivedMessage with incorrect camera -1 < 0 (exception expected)
     std::cout << " -- Test 4 : derivedMessage with incorrect camera --"  << std::endl;
     tester.test_ID =  4;
     tester.test_derivedMessage(msgc,msgc,1000,253,255,0,-1,23,ustring8_t((uint8_t *)"abcdefgh"));
-    tester.print_last_test_result(test::E_Error::exception);
+    tester.print_last_test_result(testMessage::E_Error::exception);
 
     //Test 5: derivedMessage with incorrect action 78 > 63 (exception expected)
     std::cout << " -- Test 5 : derivedMessage with incorrect action --"  << std::endl;
     tester.test_ID =  5;
     tester.test_derivedMessage(msgc,msgc,1000,253,255,1,0,78,ustring8_t((uint8_t *)"abcdefgh"));
-    tester.print_last_test_result(test::E_Error::exception);
+    tester.print_last_test_result(testMessage::E_Error::exception);
 
     std::cout << std::endl;
     std::cout << "--- Testing End ---"  << std::endl;
