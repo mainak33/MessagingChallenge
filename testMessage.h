@@ -14,6 +14,9 @@
 #include "printMessage.h"
 #include <assert.h>
 #include <iostream>
+#include <random>
+
+ustring8_t generate_random_ustring8_t(std::size_t length);
 
 class testMessage{
     public:
@@ -52,25 +55,31 @@ class testMessage{
        testMessage::E_Error error;
        
     public:
-        bool degug_flag;
+        bool debug_flag;
         unsigned int test_ID;
 
-        explicit testMessage(const unsigned int &test_IDin, bool degug_flagin = false){
+        explicit testMessage(const unsigned int &test_IDin, bool debug_flagin = false){
             this->test_ID = test_IDin;
-            this->degug_flag = degug_flagin;
+            this->debug_flag = debug_flagin;
             this->error = testMessage::E_Error::none;
         };
 
+        void reset(const unsigned int &test_IDin){
+            this->test_ID = test_IDin;
+            this->error = testMessage::E_Error::none;
+        };
   
-        testMessage::E_Error check_last_received_baseMesaage(const baseMessage &msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint32_t payload_lengthchk, const ustring8_t payloadchk, bool skip_payload_check = false);
+        testMessage::E_Error check_last_received_baseMesaage(const baseMessage &msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint32_t payload_lengthchk, const ustring8_t &payloadchk, bool skip_payload_check = false);
 
-        testMessage::E_Error check_last_received_derivedMesaage(const derivedMessage &msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint8_t &lightschk, const uint8_t  &camerachk, const uint8_t &actionchk, const ustring8_t namechk);
+        testMessage::E_Error check_last_received_derivedMesaage(const derivedMessage &msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint8_t &lightschk, const uint8_t  &camerachk, const uint8_t &actionchk, const ustring8_t &namechk);
 
-        testMessage::E_Error test_baseMessage(baseMessage &send_msg, baseMessage &recv_msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint32_t payload_lengthchk, const ustring8_t payloadchk);
+        testMessage::E_Error test_baseMessage(baseMessage &send_msg, baseMessage &recv_msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint32_t &payload_lengthchk, const ustring8_t &payloadchk);
 
-        testMessage::E_Error test_derivedMessage(derivedMessage &send_msg, derivedMessage &recv_msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint8_t &lightschk, const uint8_t  &camerachk, const uint8_t &actionchk, const ustring8_t namechk);
+        testMessage::E_Error test_derivedMessage(derivedMessage &send_msg, derivedMessage &recv_msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint8_t &lightschk, const uint8_t  &camerachk, const uint8_t &actionchk, const ustring8_t &namechk);
 
         void print_last_test_result(const testMessage::E_Error & expected_error);
+        
+       
     
 };
 

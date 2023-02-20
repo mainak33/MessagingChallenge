@@ -10,7 +10,7 @@
 
 //Constructor
 derivedMessage::derivedMessage():baseMessage(){ 
-    this->lights_camera_action = 0x00; // Default 0 (indicates no message recieved yet)
+    this->lights_camera_action = 0x00; // Default 0 (indicates no message received yet)
 }
 
 //Access Methods
@@ -60,7 +60,7 @@ ustring8_t derivedMessage::sendMessage(const uint16_t &message_IDin, const uint8
     // printf("LCA : %u\n", (unsigned int) payloadin[0]);
 
     //Use baseMessage class to construct messaage with payload
-    return baseMessage::sendMessage(message_IDin,sender_IDin,receiver_IDin,72,payloadin);
+    return baseMessage::sendMessage(message_IDin,sender_IDin,receiver_IDin,(uint32_t)72,payloadin);
     
 }
 
@@ -85,7 +85,7 @@ void derivedMessage::receiveMessage(ustring8_t net_messagein){
     this->name.replace(0,8,this->payload,1,8);
 
     //Debug Print
-    // printf("---Recieved Derived Message---\n");
+    // printf("---received Derived Message---\n");
     // printf("LCA    : %u\n", (unsigned) this->lights_camera_action);
     // printf("Lights : %d\n",(unsigned) this->get_lights());
     // printf("Camera : %d\n",(unsigned) this->get_camera());
