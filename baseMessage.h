@@ -87,6 +87,10 @@ class baseMessage{
         * @param payloadin payload of message to be sent
         * @return string representing message to be sent (in network byte order)
         */
+        template <typename T1,typename T2, typename T3, typename T4>
+        T4 sendMessage(const T1 &message_IDin, const T2 &sender_IDin, const T2 &receiver_IDin, const T3 payload_lengthin, const T4 payloadin) const { return T4 ();};
+
+        
         virtual ustring8_t sendMessage(const uint16_t &message_IDin, const uint8_t &sender_IDin, const uint8_t &receiver_IDin, const uint32_t payload_lengthin, const ustring8_t payloadin)const;
         
         

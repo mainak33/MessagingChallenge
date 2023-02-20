@@ -16,7 +16,7 @@ void print_sent_baseMessage(const ustring8_t &net_msgin){
     uint32_t payload_lengthchk = ntohl(net_msgin[4] << 24 | net_msgin[5] << 16 | net_msgin[6] << 8 | net_msgin[7]);
     printf("    Payload length: %lu\n", (unsigned long) payload_lengthchk);  
     printf("    Payload: ");
-    for (uint32_t kk=8; kk < 8+ceil(payload_lengthchk/8); ++kk){
+    for (uint32_t kk=8; kk < 8+ceil((double)payload_lengthchk/8); ++kk){
         printf("%c", (uint8_t) net_msgin[kk]);
     }
     printf("\n");
@@ -45,7 +45,7 @@ void print_last_received_baseMesaage(const baseMessage &msg){
     printf("    Payload length: %lu\n", (unsigned long) msg.get_payload_length());
     printf("    Payload: ");
     ustring8_t payload_received =  msg.get_payload();
-    for (uint32_t kk=0; kk < ceil(msg.get_payload_length()/8); ++kk){
+    for (uint32_t kk=0; kk < ceil((double)msg.get_payload_length()/8); ++kk){
         printf("%c", (uint8_t)payload_received[kk]);
     }
     printf("\n");

@@ -6,12 +6,13 @@
  */
 
 #include "baseMessage.h"
+#include <stdexcept>
 
 //Constructor        
 baseMessage::baseMessage(){
-    message_ID = htons(0x00);     // Default 0 (indicates no message recieved yet)
-    sender_ID = 0x00;             // Default 0 (indicates no message recieved yet)
-    receiver_ID = 0x00;           // Default 0 (indicates no message recieved yet)  
+    message_ID = htons(0x00);     // Default 0 
+    sender_ID = 0x00;             // Default 0 
+    receiver_ID = 0x00;           // Default 0 
     payload_length = htonl(0x00); // Default 0
     //NOTE: htons and htonl are not required above but used in case defaults are changed in future
 }
@@ -44,6 +45,12 @@ ustring8_t baseMessage::sendMessage(const uint16_t &message_IDin, const uint8_t 
     
     //Initialize message
     ustring8_t net_message;
+    
+    //Throw exception if payload length is longer than payload
+    if (payload_length_bytes > (uint32_t) payloadin.size()){
+        throw std::invalid_argument("Invalid payload. The payload length is longer than the payload provided");
+        return net_message;
+    }
     net_message.resize(8+payload_length_bytes);
     
     //Store messageID, senderID, receiver_ID in message
@@ -59,7 +66,7 @@ ustring8_t baseMessage::sendMessage(const uint16_t &message_IDin, const uint8_t 
     net_message[4] = (uint8_t) (payload_lengthnet >> 24) & 0xFF;
     net_message[5] = (uint8_t) (payload_lengthnet >> 16) & 0xFF;
     net_message[6] = (uint8_t) (payload_lengthnet >> 8) & 0xFF;
-    net_message[7] = (uint8_t) payload_lengthnet & 0xFF;
+    net_message[7] = (uint8_t) (payload_lengthnet & 0xFF);
     
     //Store payload in message
     net_message.replace(8,payload_length_bytes,payloadin);
