@@ -8,7 +8,7 @@
 #include "testMessage.h"
 #include<cmath>
 
-//Method to generate a random unsigned string of given length
+//Function to generate a random string of given length
 ustring8_t generate_random_ustring8_t(std::size_t length){
     const ustring8_t chars = ustring8_t((uint8_t *)"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
 
@@ -126,8 +126,8 @@ testMessage::E_Error testMessage::test_send_recv_derivedMessage(derivedMessage &
 
 //Print whether last test passed 
 bool testMessage::print_last_test_result(const testMessage::E_Error & expected_error){
-    bool success;
-    if (this->debug_flag) std::cout << "    Test " << this->test_ID << " Run Expected Error : " << this->errorstring(this->error) << std::endl;
+    bool success = false;
+    if (this->debug_flag) std::cout << "    Test " << this->test_ID << " Run Expected Error : " << this->errorstring(expected_error) << std::endl;
 
     if (this->error == expected_error) {
         std::cout << "    Test " << this->test_ID << " : PASSED"  << std::endl;
@@ -143,8 +143,8 @@ bool testMessage::print_last_test_result(const testMessage::E_Error & expected_e
 //Run Tests
 void testMessage::run_tests(bool is_verbose){
     //Set verbosity
-    bool debug_flagin = is_verbose;
-    
+    this->debug_flag = is_verbose;
+
     //Initialize some variables
     int n_success = 0;
     bool this_success;
@@ -189,6 +189,13 @@ void testMessage::run_tests(bool is_verbose){
     this_success = this->print_last_test_result(testMessage::E_Error::none);\
     if (this_success) n_success++;
 
+    //Test : baseMessage with payload input longer than specified length (No errors expected)
+    this->reset(++this->test_ID);
+    std::cout << " -- Test " << this->test_ID << " : baseMessage with with payload input longer than specified length --"  << std::endl;
+    this->test_send_recv_baseMessage(msga,msgb,300,7,28,48,(uint8_t *)"afgdeghijkl");
+    this_success = this->print_last_test_result(testMessage::E_Error::none);
+    if (this_success) n_success++;
+
     //Test : baseMessage with payload length longer than message (exception expected during send)    
     this->reset(++this->test_ID);
     std::cout << " -- Test " << this->test_ID << " : baseMessage send and receive with payload length longer than message --"  << std::endl;
@@ -223,8 +230,8 @@ void testMessage::run_tests(bool is_verbose){
         current_error = this->test_send_recv_baseMessage(msga,msgb,(uint16_t) distpow16(rng), (uint8_t) distpow8(rng), (uint8_t) distpow8(rng),payload_lengthin,payloadin);
         if (current_error != testMessage::E_Error::none) break;
     }
-    this->debug_flag = debug_flagin;
     this_success = this->print_last_test_result(testMessage::E_Error::none);
+    this->debug_flag = is_verbose;
     if (this_success) n_success++;
 
     //Testing derivedMessage
@@ -258,6 +265,21 @@ void testMessage::run_tests(bool is_verbose){
     this_success = this->print_last_test_result(testMessage::E_Error::exception);
     if (this_success) n_success++;
 
+
+    //Test : derivedMessage with incorrect name longer than 8 characters (exception expected)
+    this->reset(++this->test_ID);
+    std::cout << " -- Test " << this->test_ID << " : derivedMessage with incorrect name longer than 8 characters --"  << std::endl;
+    this->test_send_recv_derivedMessage(msgc,msgd,1000,253,255,1,0,78,ustring8_t((uint8_t *)"abcdefghi"));
+    this_success = this->print_last_test_result(testMessage::E_Error::exception);
+    if (this_success) n_success++;
+
+    //Test : derivedMessage with incorrect name shorter than 8 characters (exception expected)
+    this->reset(++this->test_ID);
+    std::cout << " -- Test " << this->test_ID << " : derivedMessage with incorrect name longer than 8 characters --"  << std::endl;
+    this->test_send_recv_derivedMessage(msgc,msgd,1000,253,255,1,0,78,ustring8_t((uint8_t *)"abcde"));
+    this_success = this->print_last_test_result(testMessage::E_Error::exception);
+    if (this_success) n_success++;
+
     //Test : derivedMessage with random inputs  (No errors expected)
     this->reset(++this->test_ID);
     std::cout << " -- Test " << this->test_ID << " : derivedMessage send and receive 100 times with random inputs --"  << std::endl;
@@ -267,12 +289,14 @@ void testMessage::run_tests(bool is_verbose){
         if (current_error != testMessage::E_Error::none) break;
         //else std::cout << "Message " << (unsigned long) msgnum << "passed"<< std::endl;
     }
-    this->debug_flag = debug_flagin;
     this_success = this->print_last_test_result(testMessage::E_Error::none);
+    this->debug_flag = is_verbose;
     if (this_success) n_success++;
 
     std::cout << std::endl;
     
-    std::cout << "Testing Report : " << n_success << "/" << this->test_ID << " tests passed ---"  << std::endl;
+    std::cout << "TESTS SUMMARY : " << n_success << "/" << this->test_ID << " tests passed ---"  << std::endl;
+    
+    std::cout << std::endl;
     std::cout << "--- Testing End ---"  << std::endl;
 }
