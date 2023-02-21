@@ -78,21 +78,6 @@ ustring8_t baseMessage::sendMessage(const uint16_t &message_IDin, const uint8_t 
     //Store payload in message
     net_message.replace(8,payload_length_bytes,payloadin);
 
-    //Debug Print
-    // printf("---Base Sending Message---\n");
-    // uint16_t message_IDout = ntohs(net_message[0] << 8 | net_message[1]);
-    // printf("Message  ID: %u\n", (unsigned) message_IDout);
-    // printf("Sender   ID: %u\n", net_message[2]);
-    // printf("Receiver ID: %u\n", net_message[3]);
-    // uint32_t payload_lengthout = ntohl(net_message[4] << 24 | net_message[5] << 16 | net_message[6] << 8 | net_message[7]);
-    // printf("Payload length: %lu\n", (unsigned long) payload_lengthout);
-    
-    // printf("Message: ");
-    // for (uint32_t kk=8; kk < payload_length_bytes+8; ++kk){
-    //     printf("%c", (uint8_t) net_message[kk]);
-    // }
-    // printf("\n");
-
     return net_message;
 };
 
@@ -108,18 +93,5 @@ void baseMessage::receiveMessage(const ustring8_t &net_messagein){
         this->payload.replace(0,payload_length_bytes, net_messagein,8,payload_length_bytes);
     }
     
-    //Debug Print
-    // printf("---Base Received Message---\n");
-    // printf("Message  ID: %u\n", (unsigned) this->message_ID);
-    // printf("Sender   ID: %u\n", this->sender_ID );
-    // printf("Receiver ID: %u\n", this->receiver_ID);
-    // printf("Payload length: %lu\n", (unsigned long) this->payload_length);
-    // printf("Received Message: ");
-    // uint32_t payload_length_bytes2 = nbits_to_nbytes(this->payload_length);
-    // for (uint32_t kk=0; kk < payload_length_bytes2; ++kk){
-    //     printf("%c", (uint8_t) this->payload[kk]);
-    // }
-    // printf("\n");
-
     return;
 }

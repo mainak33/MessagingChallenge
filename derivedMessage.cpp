@@ -52,13 +52,6 @@ ustring8_t derivedMessage::sendMessage(const uint16_t &message_IDin, const uint8
     payloadin[0] = lightsin << 7 | camerain << 6 | (actionin  &  (uint8_t) 63);
     payloadin.replace(1,8,namein);
 
-    //Debug Print
-    // printf("---Sending Derived Message---\n");
-    // printf("Lights %d\n",(unsigned) lightsin);
-    // printf("Camera %d\n",(unsigned) camerain);
-    // printf("Action %d\n",(unsigned) actionin);
-    // printf("LCA : %u\n", (unsigned int) payloadin[0]);
-
     //Use baseMessage class to construct messaage with payload
     return baseMessage::sendMessage(message_IDin,sender_IDin,receiver_IDin,(uint32_t)72,payloadin);
     
@@ -83,19 +76,6 @@ void derivedMessage::receiveMessage(ustring8_t net_messagein){
     //Store payload fields in members
     this->lights_camera_action = this->payload[0];
     this->name.replace(0,8,this->payload,1,8);
-
-    //Debug Print
-    // printf("---received Derived Message---\n");
-    // printf("LCA    : %u\n", (unsigned) this->lights_camera_action);
-    // printf("Lights : %d\n",(unsigned) this->get_lights());
-    // printf("Camera : %d\n",(unsigned) this->get_camera());
-    // printf("Action : %d\n",(unsigned) this->get_action());
-    // ustring8_t nameout = this->get_name();
-    // printf("Name: ");
-    // for (uint32_t kk=0; kk < 8; ++kk){
-    //     printf("%c", (uint8_t) nameout[kk]);
-    // }
-    // printf("\n");
     
     return;
 }  

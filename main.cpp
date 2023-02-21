@@ -9,10 +9,11 @@ int main(){
     std::cout << "--- Example usage of baseMessage Class ---"  << std::endl;
     baseMessage msga,msgb;
     uint16_t message_ID        = (uint16_t) 300; // Must be in range [0 , 2^16-1= 65535]. Otherwise implicit conversion may happen
-    uint8_t ID_a              = (uint8_t) 44;    // Must be in range [0 , 2^8-1= 63]. Otherwise implicit conversion may happen
-    uint8_t ID_b              = (uint8_t) 6;     // Must be in range [0 , 2^8-1= 63]. Otherwise implicit conversion may happen
-    uint32_t payloada2b_length = (uint32_t)40;   // Must be 32 bit unsigned integer 
-    ustring8_t payload_a2b = ustring8_t((uint8_t *)"abcdefg"); // number of characters in payload must be longer than ceil(payloada2b_length/8). Any characters after this are ignored 
+    uint8_t ID_a               = (uint8_t) 44;   // Must be in range [0 , 2^8-1= 63]. Otherwise implicit conversion may happen
+    uint8_t ID_b               = (uint8_t) 6;    // Must be in range [0 , 2^8-1= 63]. Otherwise implicit conversion may happen
+    uint32_t payloada2b_length = (uint32_t)40;   // Must be 32 bit unsigned integer.
+    ustring8_t payload_a2b = ustring8_t((uint8_t *)"abcdefg"); // Number of characters in payload must be longer than ceil(payloada2b_length/8). Any characters after this are ignored 
+    //(eg. Here only first 40 bits = 8 bytes of input payload "abcde" will be sent)
 
     ustring8_t net_msg_a2b = msga.sendMessage(message_ID, ID_a, ID_b, payloada2b_length, payload_a2b);//Generate message to be sent (Simulate a sending b a message)
     print_sent_baseMessage(net_msg_a2b);  //Debug print
@@ -37,9 +38,9 @@ int main(){
     std::cout << std::endl;
 
     //Run Tests
-    testMessage tester = testMessage(1,false);
-    bool verbose_tests = true;
-    tester.run_tests(verbose_tests);
+    testMessage tester = testMessage(1,false); //Creating object of class used for testing
+    bool verbose_tests = true;// Set to true to see sent/received messages (Tests with multiple messages will still suppress prints)
+    tester.run_tests(verbose_tests); //Run test set (see: testMessage::run_tests in testMessage.cpp. Output is sent to stdout)
 
     return 0;
 }
