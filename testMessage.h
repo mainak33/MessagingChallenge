@@ -52,32 +52,27 @@ class testMessage{
        };
     
     private:
-       testMessage::E_Error error;
+       testMessage::E_Error error; //!< Internal multivariate error flag 
        
     public:
-        bool debug_flag;
-        unsigned int test_ID;
+        bool debug_flag;      //!< Debug flag to restrict or allow prints
+        unsigned int test_ID; //!< Internal flag for identifying current test 
 
-        explicit testMessage(const unsigned int &test_IDin, bool debug_flagin = false){
-            this->test_ID = test_IDin;
-            this->debug_flag = debug_flagin;
-            this->error = testMessage::E_Error::none;
-        };
+        explicit testMessage(const unsigned int &test_IDin, bool debug_flagin = false);
 
-        void reset(const unsigned int &test_IDin){
-            this->test_ID = test_IDin;
-            this->error = testMessage::E_Error::none;
-        };
-  
+        void reset(const unsigned int &test_IDin);
+
         testMessage::E_Error check_last_received_baseMesaage(const baseMessage &msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint32_t payload_lengthchk, const ustring8_t &payloadchk, bool skip_payload_check = false);
 
         testMessage::E_Error check_last_received_derivedMesaage(const derivedMessage &msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint8_t &lightschk, const uint8_t  &camerachk, const uint8_t &actionchk, const ustring8_t &namechk);
 
-        testMessage::E_Error test_baseMessage(baseMessage &send_msg, baseMessage &recv_msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint32_t &payload_lengthchk, const ustring8_t &payloadchk);
+        testMessage::E_Error test_send_recv_baseMessage(baseMessage &send_msg, baseMessage &recv_msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint32_t &payload_lengthchk, const ustring8_t &payloadchk);
 
-        testMessage::E_Error test_derivedMessage(derivedMessage &send_msg, derivedMessage &recv_msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint8_t &lightschk, const uint8_t  &camerachk, const uint8_t &actionchk, const ustring8_t &namechk);
+        testMessage::E_Error test_send_recv_derivedMessage(derivedMessage &send_msg, derivedMessage &recv_msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint8_t &lightschk, const uint8_t  &camerachk, const uint8_t &actionchk, const ustring8_t &namechk);
 
-        void print_last_test_result(const testMessage::E_Error & expected_error);
+        bool print_last_test_result(const testMessage::E_Error & expected_error);
+
+        void run_tests(bool is_verbose);
         
        
     

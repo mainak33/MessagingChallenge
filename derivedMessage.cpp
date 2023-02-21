@@ -37,15 +37,15 @@ ustring8_t derivedMessage::sendMessage(const uint16_t &message_IDin, const uint8
     
     //Throw exceptions if lightsin, camerain or actionin are of the incorrect size
     if (lightsin > (uint8_t) 1){
-        throw std::invalid_argument("The lights to be sent in the message must be of size 1 byte (0 or 1 in decimal)");
+        throw std::invalid_argument("The lights to be sent in the message must be of size 1 byte (0 or 1 in decimal).");
     }
     
     if (camerain > (uint8_t) 1){
-        throw std::invalid_argument("The camera to be sent in the message must be of size 1 byte (0 or 1 in decimal)");
+        throw std::invalid_argument("The camera to be sent in the message must be of size 1 byte (0 or 1 in decimal).");
     }
 
     if (actionin > (uint8_t) 63){
-        throw std::invalid_argument("The action to be sent in the message must be of size 6 bytes or less (less than 63 in decimal)");
+        throw std::invalid_argument("The action to be sent in the message must be of size 6 bytes or less (less than 63 in decimal).");
     }
 
     // Construct payload to be sent
@@ -69,7 +69,7 @@ void derivedMessage::receiveMessage(ustring8_t net_messagein){
     
     //Throw exception if message length is not  17 bytes (136 bits)
     if (net_messagein.size() != (uint8_t) 17){
-        throw std::invalid_argument("Invalid message. A valid derived message must be 136 bits (17 bytes) in length");
+        throw std::invalid_argument("Invalid message. A valid derived message must be 136 bits (17 bytes) in length.");
     }
 
     //Use baseMessage class to receive messaage with payload
@@ -77,7 +77,7 @@ void derivedMessage::receiveMessage(ustring8_t net_messagein){
     
     //Throw exception if payload length is not 72 bits (9 bytes)
     if (this->payload_length != ntohl((uint32_t) 72)){
-        throw std::invalid_argument("Invalid payload. A valid payload of a derived message must be 72 bits (9 bytes) in length");
+        throw std::invalid_argument("Invalid payload. A valid payload of a derived message must be 72 bits (9 bytes) in length.");
     }
 
     //Store payload fields in members
