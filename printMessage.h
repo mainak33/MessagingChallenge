@@ -17,7 +17,7 @@
 * Print sent baseMessage 
 * @param net_msgin message string in Network Byte Ordering
 */
-void print_sent_baseMessage(const ustring8_t &net_msgin);
+void print_sent_baseMessage(const ustring8_t &net_msgin, bool print_long_payload = false);
 
 /**
 * Print sent derivedMessage 
@@ -29,7 +29,7 @@ void print_sent_derivedMessage(const ustring8_t &net_msgin);
 * Print entire last received message of baseMesaage object
 * @param msg baseMessage object
 */
-void print_last_received_baseMesaage(const baseMessage &msg);
+void print_last_received_baseMesaage(const baseMessage &msg, bool print_long_payload = false);
 
 /**
 * Print payload of last received message of derivedMessage object

@@ -46,11 +46,18 @@ ustring8_t baseMessage::sendMessage(const uint16_t &message_IDin, const uint8_t 
     //Initialize message
     ustring8_t net_message;
     
-    //Throw exception if payload length is longer than payload
-    if (payload_length_bytes > (uint32_t) payloadin.size()){
-        throw std::invalid_argument("Invalid payload. The payload length is longer than the payload provided");
+    //Throw exception if payload length is longer than max_size of payload string
+    if (payload_length_bytes+8 > (uint32_t) net_message.max_size()){
+        throw std::invalid_argument("Invalid payload length. The payload length cannot be accomodated within the maximum size of message possible.");
         return net_message;
     }
+
+    //Throw exception if payload length is longer than payload
+    if (payload_length_bytes > (uint32_t) payloadin.size()){
+        throw std::invalid_argument("Invalid payload length. The payload length is longer than the payload provided.");
+        return net_message;
+    }
+
     net_message.resize(8+payload_length_bytes);
     
     //Store messageID, senderID, receiver_ID in message

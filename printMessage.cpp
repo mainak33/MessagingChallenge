@@ -7,7 +7,7 @@
 
 #include "printMessage.h"
 
-void print_sent_baseMessage(const ustring8_t &net_msgin){
+void print_sent_baseMessage(const ustring8_t &net_msgin, bool print_long_payload){
     printf("    --- Sent Message ---\n");
     uint16_t message_IDchk = ntohs(net_msgin[0] << 8 | net_msgin[1]);
     printf("    Message  ID: %u\n", (unsigned) message_IDchk);
@@ -16,9 +16,12 @@ void print_sent_baseMessage(const ustring8_t &net_msgin){
     uint32_t payload_lengthchk = ntohl(net_msgin[4] << 24 | net_msgin[5] << 16 | net_msgin[6] << 8 | net_msgin[7]);
     printf("    Payload length: %lu\n", (unsigned long) payload_lengthchk);  
     printf("    Payload: ");
-    for (uint32_t kk=8; kk < 8+ceil((double)payload_lengthchk/8); ++kk){
+    uint32_t print_length = ceil((double)payload_lengthchk/8);
+    if (!print_long_payload) print_length = ((print_length < (uint32_t)100) ? print_length : 100);
+    for (uint32_t kk=8; kk < 8+print_length; ++kk){
         printf("%c", (uint8_t) net_msgin[kk]);
     }
+    if (!print_long_payload && print_length==100 && ceil((double)payload_lengthchk/8) > 100) printf("...");
     printf("\n");
     return;
 }
@@ -37,7 +40,7 @@ void print_sent_derivedMessage(const ustring8_t &net_msgin){
     return;
 }
 
-void print_last_received_baseMesaage(const baseMessage &msg){
+void print_last_received_baseMesaage(const baseMessage &msg, bool print_long_payload){
     printf("    --- Received Message ---\n");
     printf("    Message  ID: %u\n", (unsigned) msg.get_message_ID());
     printf("    Sender   ID: %u\n", msg.get_sender_ID());
@@ -45,9 +48,12 @@ void print_last_received_baseMesaage(const baseMessage &msg){
     printf("    Payload length: %lu\n", (unsigned long) msg.get_payload_length());
     printf("    Payload: ");
     ustring8_t payload_received =  msg.get_payload();
-    for (uint32_t kk=0; kk < ceil((double)msg.get_payload_length()/8); ++kk){
+    uint32_t print_length = ceil((double)msg.get_payload_length()/8);
+    if (!print_long_payload) print_length = ((print_length < (uint32_t)100) ? print_length : 100);
+    for (uint32_t kk=0; kk < print_length; ++kk){
         printf("%c", (uint8_t)payload_received[kk]);
     }
+    if (!print_long_payload && print_length==100 && ceil((double)msg.get_payload_length()/8) > 100) printf("...");
     printf("\n");
     return;
 }
