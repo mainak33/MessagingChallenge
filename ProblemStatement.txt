@@ -1,0 +1,38 @@
+
+Programming Challenge Problem Statement: 
+
+Instructions
+•	Please assume that:
+o	All messages are sent and received as a stream of binary data, with each byte containing 8 bits of message content.  Bits are sent/received from MSB to LSB. 
+o	All message fields are in Network Byte Order.  The code should be agnostic to endianness.
+•	Please submit your header and source files only, plus the execution result print-out.  Please do not submit your executable, project files, etc.
+
+1.	A hypothetical protocol used to communicate with UAVs has the following common fields:
+Bits	Field
+16	Message ID
+8	Sender ID
+8	Receiver ID
+32	Payload Length
+Variable	Payload
+
+Implement a C++ class that can be used as the base class to develop specific messages later.  This class should have the following features:
+•	Initialization of common fields.
+•	Access method for each and every common field.
+•	A virtual Send function that returns a string containing the message to be sent.
+•	A virtual Receive function that accepts a string containing the message received, and populates the values of the common fields.
+
+2.	Implement a C++ class using the base class above to process a message with the following payload:
+Bits	Field
+1	Lights
+1	Camera
+6	Action
+64	Name
+
+This class should have the following features:
+•	Inherits the base class in Problem #1.
+•	Initialization of all payload fields.
+•	Access method for each and every payload field.
+•	A Send function that returns a string containing the message to be sent.
+•	A Receive function that accepts a string containing the message received, and populate the values of the payload fields.
+
+3.	Write a unit test framework to verify your implementation above.  Use your engineering judgment on the scope of your test cases.  A text print-out should be produced for the result of each test case.
