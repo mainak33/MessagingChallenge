@@ -8,13 +8,16 @@ Assumptions:
 - All message fields are in Network Byte Order.  The code should be agnostic to endianness.
 - Please submit your header and source files only, plus the execution result print-out.  Please do not submit your executable, project files, etc.
 
+ 
 1.	A hypothetical protocol used to communicate with UAVs has the following common fields:
-    Bits	    Field
-    16	        Message ID
-    8	        Sender ID
-    8	        Receiver ID
-    32	        Payload Length
-    Variable	Payload
+
+    | Bits	   | Field          |
+    |----------|----------------| 
+    | 16	   | Message ID     |
+    | 8	       | Sender ID      |
+    | 8	       | Receiver ID    |
+    | 32	   | Payload Length |
+    | Variable | Payload        |
 
     Implement a C++ class that can be used as the base class to develop specific messages later.  This class should have the following features:
     - Initialization of common fields.
@@ -23,11 +26,13 @@ Assumptions:
     - A virtual Receive function that accepts a string containing the message received, and populates the values of the common fields.
 
 2.	Implement a C++ class using the base class above to process a message with the following payload:
-    Bits	Field
-    1	    Lights
-    1	    Camera
-    6	    Action
-    64	    Name
+
+    |Bits  | Field  |
+    |------|--------|
+    |1	   | Lights |
+    |1	   | Camera |
+    |6	   | Action |
+    |64	   | Name   |
 
     This class should have the following features:
     - Inherits the base class in Problem #1.
@@ -36,17 +41,16 @@ Assumptions:
     - A Send function that returns a string containing the message to be sent.
     - A Receive function that accepts a string containing the message received, and populate the values of the payload fields.
 
-3.	Write a unit test framework to verify your implementation above.  Use your engineering judgment on the scope of your test cases.  
-    A text print-out should be produced for the result of each test case.
+3.	Write a unit test framework to verify your implementation above.  Use your engineering judgment on the scope of your test cases.  A text print-out should be produced for the result of each test case.
 
-## Building the Source Code:
+## Building the source code
 
 Code compiled and built on Win10 with :
 g++.exe (MinGW.org GCC-6.3.0-1) 6.3.0
 and 
 cmake version 3.26.3
   
-To build and run:
+To build:
 ```
 $ cmake -S . -B build -G "MinGW Makefiles"
 $ cd build
@@ -55,7 +59,7 @@ $ mingw32-make
 
 NOTE: A build on a unix system will need to link to <arpa/inet.h>. The CMakeTests.txt must be modified to install the library which contains this header file and defines htons and ntohs methods.
 
-## Example of Expected Output 
+## Expected output 
 
 NOTE: Some tests use randomly generated values and will be different every run.
 
@@ -65,6 +69,7 @@ $ cd build/apps
 $ ./messagingchallenge.exe
 ```
 
+```console
 --- Example usage of baseMessage Class ---
     --- Sent Message ---
     Message  ID: 300
@@ -283,3 +288,4 @@ $ ./messagingchallenge.exe
 TESTS SUMMARY : 15/15 tests passed ---
 
 --- Testing End ---
+```
