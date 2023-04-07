@@ -1,27 +1,70 @@
-Author : Mainak Mitra
-Date: 06 Apr,2023
+# Messaging Challenge
+The code herein is intended to solve the following programming challenge problem statement involving creation and simulated transmission of messages with variable payloads over a network.
 
-Refer to ProblemStatement.txt for purpose of code 
+## Problem Statement
 
-Files:
-  Readme.txt
-  baseMessage.h  
-  derivedMessage.h  
-  printMessage.h  
-  testMessage.h
-  baseMessage.cpp  
-  derivedMessage.cpp  
-  main.cpp  
-  printMessage.cpp  
-  testMessage.cpp
+Assumptions:
+- All messages are sent and received as a stream of binary data, with each byte containing 8 bits of message content.  Bits are sent/received from MSB to LSB. 
+- All message fields are in Network Byte Order.  The code should be agnostic to endianness.
+- Please submit your header and source files only, plus the execution result print-out.  Please do not submit your executable, project files, etc.
 
-Details:
-  Code compiled and Tested on Win10 with g++ (MinGW.org GCC-6.3.0-1) 6.3.0
-  Compilation command: $ g++ -Wall baseMessage.cpp derivedMessage.cpp printMessage.cpp testMessage.cpp main.cpp -o test.exe -l ws2_32 
+1.	A hypothetical protocol used to communicate with UAVs has the following common fields:
+    Bits	    Field
+    16	        Message ID
+    8	        Sender ID
+    8	        Receiver ID
+    32	        Payload Length
+    Variable	Payload
 
-Example of Expected Output (Some tests use randomly generated values and will be different every run):
+    Implement a C++ class that can be used as the base class to develop specific messages later.  This class should have the following features:
+    - Initialization of common fields.
+    - Access method for each and every common field.
+    - A virtual Send function that returns a string containing the message to be sent.
+    - A virtual Receive function that accepts a string containing the message received, and populates the values of the common fields.
 
-$ ./test.exe
+2.	Implement a C++ class using the base class above to process a message with the following payload:
+    Bits	Field
+    1	    Lights
+    1	    Camera
+    6	    Action
+    64	    Name
+
+    This class should have the following features:
+    - Inherits the base class in Problem #1.
+    - Initialization of all payload fields.
+    - Access method for each and every payload field.
+    - A Send function that returns a string containing the message to be sent.
+    - A Receive function that accepts a string containing the message received, and populate the values of the payload fields.
+
+3.	Write a unit test framework to verify your implementation above.  Use your engineering judgment on the scope of your test cases.  
+    A text print-out should be produced for the result of each test case.
+
+## Building the Source Code:
+
+Code compiled and built on Win10 with :
+g++.exe (MinGW.org GCC-6.3.0-1) 6.3.0
+and 
+cmake version 3.26.3
+  
+To build and run:
+```
+$ cmake -S . -B build -G "MinGW Makefiles"
+$ cd build
+$ mingw32-make
+```
+
+NOTE: A build on a unix system will need to link to <arpa/inet.h>. The CMakeTests.txt must be modified to install the library which contains this header file and defines htons and ntohs methods.
+
+## Example of Expected Output 
+
+NOTE: Some tests use randomly generated values and will be different every run.
+
+After building the source with cmake, run the executable to see example usage of the messages library classes and run tests:
+```
+$ cd build/apps
+$ ./messagingchallenge.exe
+```
+
 --- Example usage of baseMessage Class ---
     --- Sent Message ---
     Message  ID: 300
