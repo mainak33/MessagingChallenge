@@ -1,0 +1,4 @@
+add_executable(messagingchallenge messagingchallenge.cpp)
+target_compile_features(messagingchallenge PRIVATE cxx_std_17)
+
+target_link_libraries(messagingchallenge PRIVATE messages)
