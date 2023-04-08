@@ -43,31 +43,35 @@ Assumptions:
 
 3.	Write a unit test framework to verify your implementation above.  Use your engineering judgment on the scope of your test cases.  A text print-out should be produced for the result of each test case.
 
-## Building the source code
-
-Code compiled and built on Win10 with :
-g++.exe (MinGW.org GCC-6.3.0-1) 6.3.0
-and 
-cmake version 3.26.3
+## Building and running the source code
+This code was compiled and tested with the following two environments:
+- On Win10 with g++.exe (MinGW.org GCC-6.3.0-1) 6.3.0 and cmake version 3.26.3
+- In a docker container with alpine linux, where the environment and build tools are set up dynamically
   
-To build:
+To build directly on Windows:
 ```
 $ cmake -S . -B build -G "MinGW Makefiles"
 $ cd build
 $ mingw32-make
 ```
-
-NOTE: A build on a unix system will need to link to <arpa/inet.h>. The CMakeTests.txt must be modified to install the library which contains this header file and defines htons and ntohs methods.
-
-## Expected output 
-
-NOTE: Some tests use randomly generated values and will be different every run.
-
-After building the source with cmake, run the executable to see example usage of the messages library classes and run tests:
+After building the source on windows with cmake, run the executable to see example usage of the messages library classes and run tests:
 ```
 $ cd build/apps
 $ ./messagingchallenge.exe
 ```
+
+Alternatively, to build the docker container:
+```
+$ docker build --no-cache -t mcimage .
+```
+After building the docker container, run the containerized application to see example usage of the messages library classes and run tests:
+```
+$ docker run --rm -it mcimage 
+```
+
+## Expected output 
+
+NOTE: Some tests use randomly generated values and will be different every run.
 
 ```console
 --- Example usage of baseMessage Class ---
