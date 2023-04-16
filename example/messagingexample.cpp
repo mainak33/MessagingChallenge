@@ -1,5 +1,5 @@
-# include "testMessage.h"
 # include "printMessage.h"
+# include <iostream>
 
 int main(){
 
@@ -35,11 +35,6 @@ int main(){
     msgd.receiveMessage(net_msg_c2d);        //c receives message and populates its fields accordingly (Simulate c receiving the message)
     print_last_received_derivedMessage(msgd);//Debug print
     std::cout << std::endl;
-
-    //Run Tests
-    testMessage tester = testMessage(1,false); //Creating object of class used for testing
-    bool verbose_tests = true;// Set to true to see sent/received messages (Tests with multiple messages will still suppress prints)
-    tester.run_tests(verbose_tests); //Run test set (see: testMessage::run_tests in testMessage.cpp. Output is sent to stdout)
 
     return 0;
 }

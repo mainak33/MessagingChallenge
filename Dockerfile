@@ -15,6 +15,5 @@ WORKDIR /usr/src/MessagingChallenge/build/
 
 RUN make
 
-WORKDIR /usr/src/MessagingChallenge/build/apps
 
-CMD ["./messagingchallenge"] 
+

@@ -1,0 +1,4 @@
+add_executable(messagingexample messagingexample.cpp)
+target_compile_features(messagingexample PRIVATE cxx_std_17)
+
+target_link_libraries(messagingexample PRIVATE messages)
