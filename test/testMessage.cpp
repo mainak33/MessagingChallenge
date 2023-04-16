@@ -8,6 +8,7 @@
 #include "testMessage.h"
 #include <cmath>
 
+
 //Function to generate a random string of given length
 ustring8_t generate_random_ustring8_t(std::size_t length){
     const ustring8_t chars = ustring8_t((uint8_t *)"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
@@ -30,6 +31,23 @@ testMessage::testMessage(const unsigned int &test_IDin, bool debug_flagin){
     this->test_ID = test_IDin;
     this->debug_flag = debug_flagin;
     this->error = testMessage::E_Error::none;
+};
+
+//Return the errorstring
+std::string testMessage::errorstring(const testMessage::E_Error &ein){
+    if  (ein == testMessage::E_Error::invalid        ) return "invalid";
+    if  (ein == testMessage::E_Error::none           ) return "None";
+    if  (ein == testMessage::E_Error::message_ID     ) return "message_ID";
+    if  (ein == testMessage::E_Error::sender_ID      ) return "sender_ID"; 
+    if  (ein == testMessage::E_Error::receiver_ID    ) return "receiver_ID";
+    if  (ein == testMessage::E_Error::payload_length ) return "payload length";
+    if  (ein == testMessage::E_Error::payload        ) return "payload";  
+    if  (ein == testMessage::E_Error::lights         ) return "lights";
+    if  (ein == testMessage::E_Error::camera         ) return "camera";
+    if  (ein == testMessage::E_Error::action         ) return "action"; 
+    if  (ein == testMessage::E_Error::name           ) return "name"; 
+    if  (ein == testMessage::E_Error::exception      ) return "exception";
+    return ""; 
 };
 
 //Reset the testID and error
@@ -166,7 +184,7 @@ void testMessage::run_tests(bool is_verbose){
     //Testing baseMessage
     std::cout << "--- Testing baseMesssage Class ---"  << std::endl;
     testMessage::E_Error current_error;
-
+  
     //Test : baseMessage with known inputs  (No errors expected)
     this->reset(1);
     std::cout << " -- Test " << this->test_ID << " :: baseMessage send and receive with known inputs --"  << std::endl;
@@ -300,3 +318,5 @@ void testMessage::run_tests(bool is_verbose){
     std::cout << std::endl;
     std::cout << "--- Testing End ---"  << std::endl;
 }
+
+

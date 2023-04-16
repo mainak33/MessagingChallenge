@@ -43,7 +43,7 @@ Assumptions:
 
 3.	Write a unit test framework to verify your implementation above.  Use your engineering judgment on the scope of your test cases.  A text print-out should be produced for the result of each test case.
 
-## Building and running the source code
+## Building the source code
 This code was compiled and tested with the following two environments:
 - On Win10 with g++.exe (MinGW.org GCC-6.3.0-1) 6.3.0 and cmake version 3.26.3
 - In a docker container with alpine linux, where the environment and build tools are set up dynamically
@@ -54,24 +54,27 @@ $ cmake -S . -B build -G "MinGW Makefiles"
 $ cd build
 $ mingw32-make
 ```
-After building the source on windows with cmake, run the executable to see example usage of the messages library classes and run tests:
-```
-$ cd build/apps
-$ ./messagingchallenge.exe
-```
 
 Alternatively, to build the docker container:
 ```
 $ docker build --no-cache -t mcimage .
 ```
-After building the docker container, run the containerized application to see example usage of the messages library classes and run tests:
+
+## Running an example 
+
+If you are using Windows: After building the source on windows with cmake, run the messagingexample executable to see example usage of the messages library classes:
 ```
-$ docker run --rm -it mcimage 
+$ cd build/example
+$ ./messagingexample.exe
 ```
 
-## Expected output 
+If you are using a Docker container: After building the docker container, run the messagingexample executable inside the containerized application to see example usage of the messages library classes:
+```
+$ docker run --entrypoint "/bin/sh" -it mcimage
+/usr/src/MessagingChallenge/build # cd example && ./messagingexample
+```
 
-NOTE: Some tests use randomly generated values and will be different every run.
+The expected output of this example usage is:
 
 ```console
 --- Example usage of baseMessage Class ---
@@ -111,7 +114,30 @@ NOTE: Some tests use randomly generated values and will be different every run.
         Camera : 0
         Action : 63
         Name   : abcdefgh
+```
 
+NOTE : To exit the docker container use:
+``` 
+/usr/src/MessagingChallenge/build/example # exit
+```
+
+## Running tests
+
+If you are using Windows: After building the source on windows with cmake, run the runMessagingTests executable to see example usage of the messages library classes:
+```
+$ cd build/test
+$ ./runMessagingTests.exe
+```
+
+If you are using a Docker container: After building the docker container, run the runMessagingTests inside the containerized application to see example usage of the messages library classes:
+```
+$ docker run --entrypoint "/bin/sh" -it mcimage
+/usr/src/MessagingChallenge/build # cd test && ./runMessagingTests
+```
+
+The expected output of this the tests is:
+
+```console
 --- Testing Start ---
 --- Testing baseMesssage Class ---
  -- Test 1 :: baseMessage send and receive with known inputs --
@@ -293,3 +319,5 @@ TESTS SUMMARY : 15/15 tests passed ---
 
 --- Testing End ---
 ```
+
+NOTE: Some tests use randomly generated values and will be different every run.
