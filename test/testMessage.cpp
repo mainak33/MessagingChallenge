@@ -6,8 +6,6 @@
  */
 
 #include "testMessage.h"
-#include <cmath>
-
 
 //Function to generate a random string of given length
 ustring8_t generate_random_ustring8_t(std::size_t length){
@@ -31,6 +29,12 @@ testMessage::testMessage(const unsigned int &test_IDin, bool debug_flagin){
     this->test_ID = test_IDin;
     this->debug_flag = debug_flagin;
     this->error = testMessage::E_Error::none;
+    return;
+};
+
+testMessage::testMessage(){
+    testMessage(1);
+    return;
 };
 
 //Return the errorstring
@@ -320,3 +324,110 @@ void testMessage::run_tests(bool is_verbose){
 }
 
 
+// Google Tests
+// Testing baseMessage 
+//Test : baseMessage with known inputs  (No errors expected)
+TEST_F(testbaseMessage, baseMessageKnownInputs) {
+    testMessage::E_Error current_error = test_send_recv_baseMessage(msga,msgb,10,154,6,40,(uint8_t *)"abcde");
+    EXPECT_EQ(current_error,E_Error::none);
+}
+
+//Test : baseMessage with message_ID > 255 to test endian agnosticity (No errors expected)
+TEST_F(testbaseMessage, baseMessageIDgt255) {
+    testMessage::E_Error current_error = test_send_recv_baseMessage(msga,msgb,300,7,28,48,(uint8_t *)"afgdeg");
+    EXPECT_EQ(current_error,testMessage::E_Error::none);
+}
+    
+//Test : baseMessage with 0 length  (No errors expected) 
+//NOTE: negative numbers may be implicitly converted to uint types. It is upto the API user to ensure that correct arguments are entered
+TEST_F(testbaseMessage, baseMessage0Length) {
+    testMessage::E_Error current_error = this->test_send_recv_baseMessage(msga,msgb,51,66,222,0,(uint8_t *)"");
+    EXPECT_EQ(current_error,testMessage::E_Error::none);
+}
+    
+//Test : baseMessage with payload input longer than specified length (No errors expected)
+TEST_F(testbaseMessage, baseMessageLongerPayloadThanSpec) {
+    testMessage::E_Error current_error = test_send_recv_baseMessage(msga,msgb,300,7,28,48,(uint8_t *)"afgdeghijkl");
+    EXPECT_EQ(current_error,testMessage::E_Error::none);
+}
+    
+//Test : baseMessage with payload length longer than message (exception expected during send)    
+TEST_F(testbaseMessage, baseMessageLongerPayloadThanMessage) {
+    testMessage::E_Error current_error = test_send_recv_baseMessage(msga,msgb,51,66,222,64,(uint8_t *)"ab");
+    EXPECT_EQ(current_error,testMessage::E_Error::exception);
+}
+
+//Test : baseMessage with really long message (No errors expected)
+TEST_F(testbaseMessage, baseMessagereallylongmessage) {
+    testMessage::E_Error current_error = test_send_recv_baseMessage(msga,msgb,51,66,222,800000,generate_random_ustring8_t(100000));
+    EXPECT_EQ(current_error,testMessage::E_Error::none);
+}
+
+//Test : baseMessage with payload length in fractional bytes  (No errors expected)
+TEST_F(testbaseMessage, baseMessagePayloadLenFractionalbyte) {
+    testMessage::E_Error current_error = test_send_recv_baseMessage(msga,msgb,51,66,222,1,generate_random_ustring8_t(14));
+    EXPECT_EQ(current_error,testMessage::E_Error::none);
+}
+
+//Test : baseMessage with random inputs  (No errors expected)
+TEST_F(testbaseMessage, baseMessageRandomInputs){
+    testMessage::E_Error current_error = testMessage::E_Error::none;
+    uint32_t payload_lengthin, payload_lengthin_bytes;
+    ustring8_t payloadin; 
+    this->debug_flag = false;
+    for (uint32_t msgnum = 0; msgnum < 100 ; msgnum++){
+        payload_lengthin = distpow32(rng);
+        payload_lengthin_bytes = ceil((double) payload_lengthin/8);
+        payloadin = generate_random_ustring8_t(payload_lengthin_bytes);
+        current_error = test_send_recv_baseMessage(msga,msgb,(uint16_t) distpow16(rng), (uint8_t) distpow8(rng), (uint8_t) distpow8(rng),payload_lengthin,payloadin);
+        EXPECT_EQ(current_error,testMessage::E_Error::none);
+    }
+    this->debug_flag = true;
+}
+
+// Testing derivedMessage
+TEST_F(testderivedMessage, derivedMessageKnownInputs){
+    testMessage::E_Error current_error = test_send_recv_derivedMessage(msgc,msgd,1000,253,255,1,0,55,ustring8_t((uint8_t *)"abcdefgh"));
+    EXPECT_EQ(current_error,testMessage::E_Error::none);
+}    
+
+//Test : derivedMessage with incorrect lights 8 > 1 (exception expected)
+TEST_F(testderivedMessage, derivedMessageIncorrectLights){
+    testMessage::E_Error current_error = test_send_recv_derivedMessage(msgc,msgd,1000,253,255,8,0,23,ustring8_t((uint8_t *)"abcdefgh"));
+    EXPECT_EQ(current_error,testMessage::E_Error::exception);
+}    
+
+//Test : derivedMessage with incorrect camera 5 > 1 (exception expected)
+TEST_F(testderivedMessage, derivedMessageIncorrectCamera){
+    testMessage::E_Error current_error = test_send_recv_derivedMessage(msgc,msgd,1000,253,255,0,5,23,ustring8_t((uint8_t *)"abcdefgh"));
+    EXPECT_EQ(current_error,testMessage::E_Error::exception);
+}    
+    
+//Test : derivedMessage with incorrect action 78 > 63 (exception expected)
+TEST_F(testderivedMessage, derivedMessageIncorrectAction){
+    testMessage::E_Error current_error = test_send_recv_derivedMessage(msgc,msgd,1000,253,255,1,0,78,ustring8_t((uint8_t *)"abcdefgh"));
+    EXPECT_EQ(current_error,testMessage::E_Error::exception);
+}    
+
+//Test : derivedMessage with incorrect name longer than 8 characters (exception expected)
+TEST_F(testderivedMessage, derivedMessageIncorrectNameLong){
+    testMessage::E_Error current_error = test_send_recv_derivedMessage(msgc,msgd,1000,253,255,1,0,78,ustring8_t((uint8_t *)"abcdefghi"));
+    EXPECT_EQ(current_error,testMessage::E_Error::exception);
+}    
+
+//Test : derivedMessage with incorrect name shorter than 8 characters (exception expected)
+TEST_F(testderivedMessage, derivedMessageIncorrectNameShort){
+    testMessage::E_Error current_error = test_send_recv_derivedMessage(msgc,msgd,1000,253,255,1,0,78,ustring8_t((uint8_t *)"abcde"));
+    EXPECT_EQ(current_error,testMessage::E_Error::exception);
+}   
+    
+//Test : derivedMessage with random inputs  (No errors expected)
+TEST_F(testderivedMessage, derivedMessageRandomInputs){
+    this->debug_flag = false;
+    testMessage::E_Error current_error = testMessage::E_Error::none;
+    for (uint32_t msgnum = 0; msgnum < 100 ; msgnum++){
+        current_error = this->test_send_recv_derivedMessage(msgc,msgd,(uint16_t) distpow16(rng), (uint8_t) distpow8(rng), (uint8_t) distpow8(rng),(uint1_t) distpow1(rng),(uint1_t) distpow1(rng), distpow6(rng),generate_random_ustring8_t(8));
+        EXPECT_EQ(current_error,testMessage::E_Error::none);
+    }
+    this->debug_flag = true;
+}

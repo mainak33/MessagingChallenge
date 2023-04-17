@@ -13,7 +13,8 @@
 #include <assert.h>
 #include <iostream>
 #include <random>
-
+#include <cmath>
+#include <gtest/gtest.h>
  /**
 * Function to generate a random string of given length
 * @param length length of string to be generated
@@ -23,7 +24,22 @@ ustring8_t generate_random_ustring8_t(std::size_t length);
 
 /*! testMessage class declaration*/
 class testMessage{
+    
     public:
+        enum class E_Error{
+            invalid        = -1,
+            none           =  0, 
+            message_ID     =  1,
+            sender_ID      =  2, 
+            receiver_ID    =  3,
+            payload_length =  4,
+            payload        =  5,  
+            lights         =  6, 
+            camera         =  7, 
+            action         =  8, 
+            name           =  9,
+            exception      = 10,      
+        };
 
         /*! enum class to describe type of error or which field the error is associated with during tests*/
         enum class E_Error;
@@ -38,7 +54,10 @@ class testMessage{
     
        testMessage::E_Error error; //!< Internal multivariate error flag 
     
-    private:   
+    protected:  
+        
+
+       
         /**
         * Method to reset the class before performing a test
         * @param test_IDin Test ID
@@ -83,16 +102,16 @@ class testMessage{
 
 
     public:
-        bool debug_flag;      //!< Debug flag to restrict or allow prints
+       
         unsigned int test_ID; //!< Flag for identifying current test 
-
+        bool debug_flag;      //!< Flag for local printout
         /**
         * Constructor
-        * @param test_IDin Starting test ID
-        * @param debug_flagin Debug flag to restrict or allow prints
         * @return Class Object
         */
-        explicit testMessage(const unsigned int &test_IDin, bool debug_flagin = false);
+        testMessage();
+        //explicit 
+        testMessage(const unsigned int &test_IDin, bool debug_flagin = false);
        
         /**
         * Method to Run Tests (output report to stdout)
@@ -132,18 +151,62 @@ class testMessage{
  
 };
 
- enum class testMessage::E_Error{
-            invalid        = -1,
-            none           =  0, 
-            message_ID     =  1,
-            sender_ID      =  2, 
-            receiver_ID    =  3,
-            payload_length =  4,
-            payload        =  5,  
-            lights         =  6, 
-            camera         =  7, 
-            action         =  8, 
-            name           =  9,
-            exception      = 10,      
+//Framework Class to test baseMessage with GTest
+class testbaseMessage:  public testMessage, public ::testing::Test{
+    protected:
+        void SetUp() override {
+            this->reset(++this->test_ID);
         };
+        baseMessage msga, msgb;
+        
+        //Create random number generators (used for tests later)
+        std::random_device dev;
+        std::mt19937 rng;
+        std::uniform_int_distribution <uint8_t>  distpow1 ; //!< uniform distribution in range [0,2^1-1]
+        std::uniform_int_distribution <uint8_t>  distpow6 ; //!< uniform distribution in range [0, 2^6-1]
+        std::uniform_int_distribution <uint8_t>  distpow8 ; //!< uniform distribution in range [0, 2^8-1]
+        std::uniform_int_distribution <uint16_t> distpow16; //!< uniform distribution in range [0, 2^16-1]
+        std::uniform_int_distribution <uint32_t> distpow32; //!< uniform distribution in range [0, 127] 
+    
+        testbaseMessage(){
+            rng = std::mt19937(dev());
+            distpow1 =std::uniform_int_distribution <uint8_t> (0,1);   // uniform distribution in range [0,2^1-1]
+            distpow6 =std::uniform_int_distribution <uint8_t> (0,std::pow(2,6)-1);   // uniform distribution in range [0, 2^6-1]
+            distpow8 =std::uniform_int_distribution <uint8_t> (0,std::pow(2,8)-1);   // uniform distribution in range [0, 2^8-1]
+            distpow16=std::uniform_int_distribution <uint16_t>(0,std::pow(2,16)-1); // uniform distribution in range [0, 2^16-1]
+            distpow32=std::uniform_int_distribution <uint32_t>(0,127);  // uniform distribution in range [0, 127] 
+        }
+        
+};
+
+//Framework Class to test derivedMessage with GTest
+class testderivedMessage:  public testMessage, public ::testing::Test{
+    protected:
+        void SetUp() override {
+            this->reset(++this->test_ID);
+        };
+        
+        derivedMessage msgc, msgd;
+  
+        //Create random number generators (used for tests later)
+        std::random_device dev;
+        std::mt19937 rng;
+        std::uniform_int_distribution <uint8_t>  distpow1 ; //!< uniform distribution in range [0,2^1-1]
+        std::uniform_int_distribution <uint8_t>  distpow6 ; //!< uniform distribution in range [0, 2^6-1]
+        std::uniform_int_distribution <uint8_t>  distpow8 ; //!< uniform distribution in range [0, 2^8-1]
+        std::uniform_int_distribution <uint16_t> distpow16; //!< uniform distribution in range [0, 2^16-1]
+        std::uniform_int_distribution <uint32_t> distpow32; //!< uniform distribution in range [0, 127] 
+    
+        testderivedMessage(){
+            rng = std::mt19937(dev());
+            distpow1 =std::uniform_int_distribution <uint8_t> (0,1);   // uniform distribution in range [0,2^1-1]
+            distpow6 =std::uniform_int_distribution <uint8_t> (0,std::pow(2,6)-1);   // uniform distribution in range [0, 2^6-1]
+            distpow8 =std::uniform_int_distribution <uint8_t> (0,std::pow(2,8)-1);   // uniform distribution in range [0, 2^8-1]
+            distpow16=std::uniform_int_distribution <uint16_t>(0,std::pow(2,16)-1); // uniform distribution in range [0, 2^16-1]
+            distpow32=std::uniform_int_distribution <uint32_t>(0,127);  // uniform distribution in range [0, 127] 
+        }
+        
+};
+
+
 #endif //_TESTMESSAGE_

@@ -28,16 +28,15 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     include(CTest)
 
     # FetchContent added in CMake 3.11, downloads during the configure step
-    # include(FetchContent)
-    # FetchContent_Declare(
-    #   googletest
-    #   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-    # )
-    # # For Windows: Prevent overriding the parent project's compiler/linker settings
-    # set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    # # FetchContent_MakeAvailable was added in CMake 3.14; simpler usage
-    # FetchContent_MakeAvailable(googletest)
-    # enable_testing()
+    include(FetchContent)
+    FetchContent_Declare(
+      googletest
+      URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+    )
+    # For Windows: Prevent overriding the parent project's compiler/linker settings
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    # FetchContent_MakeAvailable was added in CMake 3.14; simpler usage
+    FetchContent_MakeAvailable(googletest)
 
     #   # Docs only available if this is the main app
 #   find_package(Doxygen)
