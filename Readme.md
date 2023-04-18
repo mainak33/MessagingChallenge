@@ -1,5 +1,5 @@
 # Messaging Challenge
-The code herein is intended to solve the following programming challenge problem statement involving creation and simulated transmission of messages with variable payloads over a network.
+The code herein is intended to solve the following programming challenge problem statement involving creation and simulated transmission of messages with variable payloads over a network. The messages library contains the classes which hold the messages. The library is tested both with a native test framework and a google test framework.
 
 ## Problem Statement
 
@@ -121,15 +121,15 @@ NOTE : To exit the docker container use:
 /usr/src/MessagingChallenge/build/example # exit
 ```
 
-## Running tests
+## Running tests with the native test framework
 
-If you are using Windows: After building the source on windows with cmake, run the runMessagingTests executable to see example usage of the messages library classes:
+If you are using Windows: After building the source on windows with cmake, run the runMessagingTests executable without any arguments to run all the tests in the native test framework:
 ```
 $ cd build/test
 $ ./runMessagingTests.exe
 ```
 
-If you are using a Docker container: After building the docker container, run the runMessagingTests inside the containerized application to see example usage of the messages library classes:
+If you are using a Docker container: After building the docker container, run the runMessagingTests executable inside the containerized application executable without any arguments to run all the tests in the native test framework:
 ```
 $ docker run --entrypoint "/bin/sh" -it mcimage
 /usr/src/MessagingChallenge/build # cd test && ./runMessagingTests
@@ -321,3 +321,63 @@ TESTS SUMMARY : 15/15 tests passed ---
 ```
 
 NOTE: Some tests use randomly generated values and will be different every run.
+
+## Running tests with the Google test framework
+
+If you are using Windows: After building the source on windows with cmake, run the runMessagingTests executable with the --gtest flag to run all the tests in the Google test framework:
+```
+$ cd build/test
+$ ./runMessagingTests.exe --gtest
+```
+
+If you are using a Docker container: After building the docker container, run the runMessagingTests inside the containerized application with the --gtest flag to run all the tests in the Google test framework:
+```
+$ docker run --entrypoint "/bin/sh" -it mcimage
+/usr/src/MessagingChallenge/build # cd test && ./runMessagingTests --gtest
+```
+
+The expected output of this the tests is:
+
+```console
+[==========] Running 15 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 8 tests from testbaseMessage
+[ RUN      ] testbaseMessage.baseMessageKnownInputs
+[       OK ] testbaseMessage.baseMessageKnownInputs (30 ms)
+[ RUN      ] testbaseMessage.baseMessageIDgt255
+[       OK ] testbaseMessage.baseMessageIDgt255 (15 ms)
+[ RUN      ] testbaseMessage.baseMessage0Length
+[       OK ] testbaseMessage.baseMessage0Length (0 ms)
+[ RUN      ] testbaseMessage.baseMessageLongerPayloadThanSpec
+[       OK ] testbaseMessage.baseMessageLongerPayloadThanSpec (12 ms)
+[ RUN      ] testbaseMessage.baseMessageLongerPayloadThanMessage
+[       OK ] testbaseMessage.baseMessageLongerPayloadThanMessage (2 ms)
+[ RUN      ] testbaseMessage.baseMessagereallylongmessage
+[       OK ] testbaseMessage.baseMessagereallylongmessage (10 ms)
+[ RUN      ] testbaseMessage.baseMessagePayloadLenFractionalbyte
+[       OK ] testbaseMessage.baseMessagePayloadLenFractionalbyte (1 ms)
+[ RUN      ] testbaseMessage.baseMessageRandomInputs
+[       OK ] testbaseMessage.baseMessageRandomInputs (579 ms)
+[----------] 8 tests from testbaseMessage (652 ms total)
+
+[----------] 7 tests from testderivedMessage
+[ RUN      ] testderivedMessage.derivedMessageKnownInputs
+[       OK ] testderivedMessage.derivedMessageKnownInputs (13 ms)
+[ RUN      ] testderivedMessage.derivedMessageIncorrectLights
+[       OK ] testderivedMessage.derivedMessageIncorrectLights (0 ms)
+[ RUN      ] testderivedMessage.derivedMessageIncorrectCamera
+[       OK ] testderivedMessage.derivedMessageIncorrectCamera (0 ms)
+[ RUN      ] testderivedMessage.derivedMessageIncorrectAction
+[       OK ] testderivedMessage.derivedMessageIncorrectAction (0 ms)
+[ RUN      ] testderivedMessage.derivedMessageIncorrectNameLong
+[       OK ] testderivedMessage.derivedMessageIncorrectNameLong (0 ms)
+[ RUN      ] testderivedMessage.derivedMessageIncorrectNameShort
+[       OK ] testderivedMessage.derivedMessageIncorrectNameShort (0 ms)
+[ RUN      ] testderivedMessage.derivedMessageRandomInputs
+[       OK ] testderivedMessage.derivedMessageRandomInputs (725 ms)
+[----------] 7 tests from testderivedMessage (739 ms total)
+
+[----------] Global test environment tear-down
+[==========] 15 tests from 2 test suites ran. (1392 ms total)
+[  PASSED  ] 15 tests.
+```
