@@ -135,7 +135,7 @@ $ docker run --entrypoint "/bin/sh" -it mcimage
 /usr/src/MessagingChallenge/build # cd test && ./runMessagingTests
 ```
 
-The expected output of this the tests is:
+The expected output of the natively run test framework is:
 
 ```console
 --- Testing Start ---
@@ -336,7 +336,7 @@ $ docker run --entrypoint "/bin/sh" -it mcimage
 /usr/src/MessagingChallenge/build # cd test && ./runMessagingTests --gtest
 ```
 
-The expected output of this the tests is:
+The expected output of the Google test run is:
 
 ```console
 [==========] Running 15 tests from 2 test suites.
