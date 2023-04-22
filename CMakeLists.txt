@@ -10,6 +10,17 @@ project(
 # GoogleTest requires at least C++14
 set(CMAKE_CXX_STANDARD 14)
 
+# In case external pre-build libbraries they must be put inside the CMAKE_PREFIX_PATH
+set(CMAKE_PREFIX_PATH "/prefix")
+set(as_subproject messages)
+# Make find_package a no op for execiutables/libraries internal to the Messaging Challenge project 
+macro(find_package)
+    message(STATUS "${ARGV0}")
+    if(NOT "${ARGV0}" IN_LIST as_subproject)
+        _find_package(${ARGV})
+    endif()
+endmacro()
+
 # Only do these if this is the main project, and not if it is included through add_subdirectory
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 
@@ -66,6 +77,7 @@ else()
     )
 endif()
 
+include(GNUInstallDirs)
 # The library code is here
 add_subdirectory(messages)
 
@@ -74,5 +86,6 @@ add_subdirectory(example)
 
 # The testing code is here
 add_subdirectory(test)
+
 
 

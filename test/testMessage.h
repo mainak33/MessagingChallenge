@@ -7,9 +7,8 @@
 
 #ifndef _TESTMESSAGE_
 #define _TESTMESSAGE_
-
-#include "derivedMessage.h"
-#include "printMessage.h"
+#include <messages/derivedMessage.h>
+#include <messages/printMessage.h>
 #include <assert.h>
 #include <iostream>
 #include <random>
