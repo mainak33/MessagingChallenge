@@ -1,5 +1,5 @@
 # Messaging Challenge
-The code herein is intended to solve the following programming challenge problem statement involving creation and simulated transmission of messages with variable payloads over a network. The messages library contains the classes which hold the messages. The library is tested both with a native test framework and a google test framework.
+The code herein is intended to solve a programming challenge problem involving creation and simulated transmission of messages with variable payloads over a network. The messages library contains the classes which hold the messages. The library is tested both with a native test framework and a google test framework. Instructions on how to build and install the source code with CMake and containerize example applications using Docker are also provided.
 
 ## Problem Statement
 
@@ -43,26 +43,28 @@ Assumptions:
 
 3.	Write a unit test framework to verify your implementation above.  Use your engineering judgment on the scope of your test cases.  A text print-out should be produced for the result of each test case.
 
-## Building the source code
+## Building the source code for the MessagingChallenge project
 This code was compiled and tested with the following two environments:
-- On Win10 with g++.exe (MinGW.org GCC-6.3.0-1) 6.3.0 and cmake version 3.26.3
+- On Win10 with g++.exe (MinGW.org GCC-6.3.0-1) 6.3.0 and CMake version 3.26.3
 - In a docker container with alpine linux, where the environment and build tools are set up dynamically
+
+NOTE: Instructions for building, installing and consuming this code is explained for the above two environments. However, the instructions may be easily adapted for other environments which support CMake as well.
   
-To build directly on Windows:
+If you are using Windows with MinGW: In the root directory use:
 ```
 $ cmake -S . -B build -G "MinGW Makefiles"
 $ cd build
 $ mingw32-make
 ```
 
-Alternatively, to build the docker container:
+If you are using a Docker container: Build the docker container which will build the project inside a container with an alpine linux image (see ./Dockerfile):
 ```
 $ docker build --no-cache -t mcimage .
 ```
 
 ## Running an example 
 
-If you are using Windows: After building the source on windows with cmake, run the messagingexample executable to see example usage of the messages library classes:
+If you are using Windows with MinGW: After building the source on windows with CMake, run the messagingexample executable to see example usage of the messages library classes:
 ```
 $ cd build/example
 $ ./messagingexample.exe
@@ -73,7 +75,68 @@ If you are using a Docker container: After building the docker container, run th
 $ docker run --entrypoint "/bin/sh" -it mcimage
 /usr/src/MessagingChallenge/build # cd example && ./messagingexample
 ```
+## Running tests with the native test framework
 
+If you are using Windows with MinGW: After building the source on windows with CMake, run the runMessagingTests executable without any arguments to run all the tests in the native test framework:
+```
+$ cd build/test
+$ ./runMessagingTests.exe
+```
+
+If you are using a Docker container: After building the docker container, run the runMessagingTests executable inside the containerized application executable without any arguments to run all the tests in the native test framework:
+```
+$ docker run --entrypoint "/bin/sh" -it mcimage
+/usr/src/MessagingChallenge/build # cd test && ./runMessagingTests
+```
+
+NOTE : To exit the docker container use:
+``` 
+/usr/src/MessagingChallenge/build/example # exit
+```
+
+## Running tests with the Google test framework
+
+If you are using Windows with MinGW: After building the source on windows with CMake, run the runMessagingTests executable with the --gtest flag to run all the tests in the Google test framework:
+```
+$ cd build/test
+$ ./runMessagingTests.exe --gtest
+```
+
+If you are using a Docker container: After building the docker container, run the runMessagingTests inside the containerized application with the --gtest flag to run all the tests in the Google test framework:
+```
+$ docker run --entrypoint "/bin/sh" -it mcimage
+/usr/src/MessagingChallenge/build # cd test && ./runMessagingTests --gtest
+```
+
+## Installing the messages library 
+If you are using Windows with MinGW: To install the messages library on the system at a chosen location <install_path>, first build the project into a build directory as shown above. Then navigate to the root directory of the project and use the command:
+
+```
+$ cmake --install build --prefix <install_path>
+```
+
+If you are using a Docker container: To install the messages library on the system inside the container at a chosen location <install_path>, first build the container as shown above. Then use:
+
+```
+$ docker run --entrypoint "/bin/sh" -it mcimage
+/usr/src/MessagingChallenge/build # cmake --install . --prefix <install_path>
+```
+## Consuming the messages library with a CMake project
+An example of how to consume the library is shown in the source code subdirectory consumer, which contains a separate example project which consumes the messages library as an external dependency. In ./consumer/CMakeLists.txt we see that the messages library may be found and linked to the consumer target as follows:
+```
+set(CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/../install")
+find_package(messages REQUIRED)
+target_link_libraries(consumer PRIVATE messages::messages)
+```
+Here, the CMAKE_PREFIX_PATH must be set to the <install_path> where the messages library was installed on the system to allow find_package to finnd the messages library. For this case, it is assumed that it was installed in a subdirectory of the root ./install and the relative path from the consumer subdirectory is used.
+
+./consumer/consumer.cpp shows how the consuming project can include the public headers of the messages library:
+```
+#include <messages/printMessage.h>
+```
+NOTE: The Consumer project may be built using similar commands as shown for the MessagingChallenge project above, issued inside the consumer subdirectory instead of the root.
+
+## Expected Outputs
 The expected output of this example usage is:
 
 ```console
@@ -114,25 +177,6 @@ The expected output of this example usage is:
         Camera : 0
         Action : 63
         Name   : abcdefgh
-```
-
-NOTE : To exit the docker container use:
-``` 
-/usr/src/MessagingChallenge/build/example # exit
-```
-
-## Running tests with the native test framework
-
-If you are using Windows: After building the source on windows with cmake, run the runMessagingTests executable without any arguments to run all the tests in the native test framework:
-```
-$ cd build/test
-$ ./runMessagingTests.exe
-```
-
-If you are using a Docker container: After building the docker container, run the runMessagingTests executable inside the containerized application executable without any arguments to run all the tests in the native test framework:
-```
-$ docker run --entrypoint "/bin/sh" -it mcimage
-/usr/src/MessagingChallenge/build # cd test && ./runMessagingTests
 ```
 
 The expected output of the natively run test framework is:
@@ -321,20 +365,6 @@ TESTS SUMMARY : 15/15 tests passed ---
 ```
 
 NOTE: Some tests use randomly generated values and will be different every run.
-
-## Running tests with the Google test framework
-
-If you are using Windows: After building the source on windows with cmake, run the runMessagingTests executable with the --gtest flag to run all the tests in the Google test framework:
-```
-$ cd build/test
-$ ./runMessagingTests.exe --gtest
-```
-
-If you are using a Docker container: After building the docker container, run the runMessagingTests inside the containerized application with the --gtest flag to run all the tests in the Google test framework:
-```
-$ docker run --entrypoint "/bin/sh" -it mcimage
-/usr/src/MessagingChallenge/build # cd test && ./runMessagingTests --gtest
-```
 
 The expected output of the Google test run is:
 
