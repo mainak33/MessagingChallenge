@@ -5,9 +5,22 @@
  * @brief implementation of printing functions 
  */
 
-#include "printMessage.h"
+#include <messages/printMessage.h>
+#include <messages/messagesVersion.h>
+#include <iostream>
+#include <string>
 
-void print_sent_baseMessage(const ustring8_t &net_msgin, bool print_long_payload){
+//Get the version of the messages library 
+std::string messages::get_version(){
+    return std::to_string(messages_VERSION_MAJOR) +  "." + std::to_string(messages_VERSION_MINOR);
+}
+
+//Print the version of the messages library 
+void messages::print_version(){
+    std::cout << " The version of the messages library is : " << messages::get_version() << std::endl;
+}
+
+void messages::print_sent_baseMessage(const ustring8_t &net_msgin, bool print_long_payload){
     printf("    --- Sent Message ---\n");
     uint16_t message_IDchk = ntohs(net_msgin[0] << 8 | net_msgin[1]);
     printf("    Message  ID: %u\n", (unsigned) message_IDchk);
@@ -26,7 +39,7 @@ void print_sent_baseMessage(const ustring8_t &net_msgin, bool print_long_payload
     return;
 }
 
-void print_sent_derivedMessage(const ustring8_t &net_msgin){
+void messages::print_sent_derivedMessage(const ustring8_t &net_msgin){
     print_sent_baseMessage(net_msgin);
     printf("        Payload Details:\n");
     printf("            Lights : %d\n",(unsigned) ((net_msgin[8] & (uint8_t)128) >> 7) );
@@ -40,7 +53,7 @@ void print_sent_derivedMessage(const ustring8_t &net_msgin){
     return;
 }
 
-void print_last_received_baseMesaage(const baseMessage &msg, bool print_long_payload){
+void messages::print_last_received_baseMesaage(const baseMessage &msg, bool print_long_payload){
     printf("    --- Received Message ---\n");
     printf("    Message  ID: %u\n", (unsigned) msg.get_message_ID());
     printf("    Sender   ID: %u\n", msg.get_sender_ID());
@@ -58,7 +71,7 @@ void print_last_received_baseMesaage(const baseMessage &msg, bool print_long_pay
     return;
 }
 
-void print_last_received_derivedMessage_payload(const derivedMessage &msg){
+void messages::print_last_received_derivedMessage_payload(const derivedMessage &msg){
     printf("    Payload Details:\n");
     printf("        Lights : %d\n",(unsigned) msg.get_lights());
     printf("        Camera : %d\n",(unsigned) msg.get_camera());
@@ -72,8 +85,8 @@ void print_last_received_derivedMessage_payload(const derivedMessage &msg){
     return;
 }
 
-void print_last_received_derivedMessage(const derivedMessage &msg){
-    print_last_received_baseMesaage(msg);
-    print_last_received_derivedMessage_payload(msg);
+void messages::print_last_received_derivedMessage(const derivedMessage &msg){
+    messages::print_last_received_baseMesaage(msg);
+    messages::print_last_received_derivedMessage_payload(msg);
     return;
 }

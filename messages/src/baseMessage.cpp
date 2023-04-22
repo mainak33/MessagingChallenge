@@ -5,11 +5,11 @@
  * @brief baseMessage class members implementation
  */
 
-#include "baseMessage.h"
+#include <messages/baseMessage.h>
 #include <stdexcept>
 
 //Constructor        
-baseMessage::baseMessage(){
+messages::baseMessage::baseMessage(){
     message_ID = htons(0x00);     // Default 0 
     sender_ID = 0x00;             // Default 0 
     receiver_ID = 0x00;           // Default 0 
@@ -18,28 +18,28 @@ baseMessage::baseMessage(){
 }
 
 //Access Methods
-uint16_t baseMessage::get_message_ID() const{
+uint16_t messages::baseMessage::get_message_ID() const{
     return ntohs(this->message_ID); //Convert to host system byte ordering before returning
 }
 
-uint8_t baseMessage::get_sender_ID() const{
+uint8_t messages::baseMessage::get_sender_ID() const{
     return this->sender_ID;
 }
 
-uint8_t baseMessage::get_receiver_ID() const{
+uint8_t messages::baseMessage::get_receiver_ID() const{
     return this->receiver_ID;
 }
 
-uint32_t baseMessage::get_payload_length() const{
+uint32_t messages::baseMessage::get_payload_length() const{
     return ntohl(this->payload_length); //Convert to host system byte ordering before returning
 }
 
-ustring8_t baseMessage::get_payload() const{
+ustring8_t messages::baseMessage::get_payload() const{
     return this->payload;
 };
 
 //Send Message
-ustring8_t baseMessage::sendMessage(const uint16_t &message_IDin, const uint8_t &sender_IDin, const uint8_t &receiver_IDin, const uint32_t payload_lengthin, const ustring8_t payloadin)const{
+ustring8_t messages::baseMessage::sendMessage(const uint16_t &message_IDin, const uint8_t &sender_IDin, const uint8_t &receiver_IDin, const uint32_t payload_lengthin, const ustring8_t payloadin)const{
     
     uint32_t payload_length_bytes = nbits_to_nbytes(payload_lengthin);
     
@@ -82,7 +82,7 @@ ustring8_t baseMessage::sendMessage(const uint16_t &message_IDin, const uint8_t 
 };
 
 //Receive Message and Update members (fields)
-void baseMessage::receiveMessage(const ustring8_t &net_messagein){
+void messages::baseMessage::receiveMessage(const ustring8_t &net_messagein){
     this->message_ID = net_messagein[0] << 8 | net_messagein[1]; //Store in Network Byte Order
     this->sender_ID = net_messagein[2];
     this->receiver_ID = net_messagein[3];

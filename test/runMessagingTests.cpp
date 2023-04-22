@@ -1,7 +1,9 @@
 # include "testMessage.h"
-# include "printMessage.h"
+# include <messages/printMessage.h>
 # include <string>
 # include <algorithm>
+
+using namespace messages;
 int main(int argc, char **argv) {
     int max_args = 1; //Maximum value of argc allowed
     int ret = 0;

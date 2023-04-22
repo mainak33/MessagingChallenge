@@ -1,5 +1,8 @@
-# Headers and Sources
 
+# Add headers for Version
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/messagesVersion.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/include/messages/messagesVersion.h")
+
+# Headers and Sources
 # Globs are not recommended by CMake, but the following may be used if they are to be used
 # file(GLOB HEADER_LIST CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
 # file(GLOB SOURCE_LIST CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
@@ -11,7 +14,10 @@ set (SOURCE_LIST
 set (HEADER_LIST
     "${CMAKE_CURRENT_SOURCE_DIR}/include/messages/baseMessage.h" 
     "${CMAKE_CURRENT_SOURCE_DIR}/include/messages/derivedMessage.h"  
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/messages/printMessage.h")
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/messages/printMessage.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/messages/messagesVersion.h")
+
+
 # Make an automatic library - will be static or dynamic based on user setting
 add_library(messages "${SOURCE_LIST}" "${HEADER_LIST}")
 
@@ -46,12 +52,22 @@ install(EXPORT messagesTargets
         NAMESPACE messages::
         DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/messages")
 
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake/messagesConfig.cmake"
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/messages")
-
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/messages"
         DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/messages"
         FILES_MATCHING PATTERN "*.h*")
+
+include(CMakePackageConfigHelpers)
+
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/messagesConfigVersion.cmake"
+    VERSION ${messages_VERSION}
+    COMPATIBILITY AnyNewerVersion)
+
+install(FILES 
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/messagesConfig.cmake"
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/messagesConfigVersion.cmake"
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/messages")
+
 
 # IDEs should put the headers in a nice place
 # source_group(

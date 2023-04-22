@@ -74,7 +74,7 @@ class testMessage{
         * @param skip_payload_check skip checking payload if true
         * @return error type
         */
-        testMessage::E_Error check_last_received_baseMesaage(const baseMessage &msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint32_t payload_lengthchk, const ustring8_t &payloadchk, bool skip_payload_check = false);
+        testMessage::E_Error check_last_received_baseMesaage(const messages::baseMessage &msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint32_t payload_lengthchk, const ustring8_t &payloadchk, bool skip_payload_check = false);
 
 
         /**
@@ -89,7 +89,7 @@ class testMessage{
         * @param namechk expected name
         * @return error type
         */
-        testMessage::E_Error check_last_received_derivedMesaage(const derivedMessage &msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint8_t &lightschk, const uint8_t  &camerachk, const uint8_t &actionchk, const ustring8_t &namechk);
+        testMessage::E_Error check_last_received_derivedMesaage(const messages::derivedMessage &msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint8_t &lightschk, const uint8_t  &camerachk, const uint8_t &actionchk, const ustring8_t &namechk);
 
         
         /**
@@ -130,7 +130,7 @@ class testMessage{
         * @param skip_payload_check skip checking payload if true
         * @return error type
         */
-        testMessage::E_Error test_send_recv_baseMessage(baseMessage &send_msg, baseMessage &recv_msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint32_t &payload_lengthchk, const ustring8_t &payloadchk);
+        testMessage::E_Error test_send_recv_baseMessage(messages::baseMessage &send_msg, messages::baseMessage &recv_msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint32_t &payload_lengthchk, const ustring8_t &payloadchk);
 
         /**
         * Method to test sending and receiving a derivedMessage
@@ -145,7 +145,7 @@ class testMessage{
         * @param namechk expected name
         * @return error type
         */
-        testMessage::E_Error test_send_recv_derivedMessage(derivedMessage &send_msg, derivedMessage &recv_msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint8_t &lightschk, const uint8_t  &camerachk, const uint8_t &actionchk, const ustring8_t &namechk);
+        testMessage::E_Error test_send_recv_derivedMessage(messages::derivedMessage &send_msg, messages::derivedMessage &recv_msg, const uint16_t &message_IDchk, const uint8_t &sender_IDchk, const uint8_t &receiver_IDchk, const uint8_t &lightschk, const uint8_t  &camerachk, const uint8_t &actionchk, const ustring8_t &namechk);
 
  
 };
@@ -156,7 +156,7 @@ class testbaseMessage:  public testMessage, public ::testing::Test{
         void SetUp() override {
             this->reset(++this->test_ID);
         };
-        baseMessage msga, msgb;
+        messages::baseMessage msga, msgb;
         
         //Create random number generators (used for tests later)
         std::random_device dev;
@@ -185,7 +185,7 @@ class testderivedMessage:  public testMessage, public ::testing::Test{
             this->reset(++this->test_ID);
         };
         
-        derivedMessage msgc, msgd;
+        messages::derivedMessage msgc, msgd;
   
         //Create random number generators (used for tests later)
         std::random_device dev;

@@ -5,33 +5,33 @@
  * @brief derivedMessage class members implementation
  */
 
-#include "derivedMessage.h"
+#include <messages/derivedMessage.h>
 #include <stdexcept>
 
 //Constructor
-derivedMessage::derivedMessage():baseMessage(){ 
+messages::derivedMessage::derivedMessage(){ 
     this->lights_camera_action = 0x00; // Default 0 (indicates no message received yet)
 }
 
 //Access Methods
-uint1_t derivedMessage::get_lights() const{
+uint1_t messages::derivedMessage::get_lights() const{
     return (lights_camera_action & (uint8_t)128) >>7;
 }
 
-uint1_t derivedMessage::get_camera() const{
+uint1_t messages::derivedMessage::get_camera() const{
     return (lights_camera_action &  (uint8_t) 64) >> 6;
 }
 
-uint8_t derivedMessage::get_action() const{
+uint8_t messages::derivedMessage::get_action() const{
     return (lights_camera_action & (uint8_t) 63);
 }
 
-ustring8_t derivedMessage::get_name() const{
+ustring8_t messages::derivedMessage::get_name() const{
     return this->name;
 };
 
 //Send Message
-ustring8_t derivedMessage::sendMessage(const uint16_t &message_IDin, const uint8_t &sender_IDin, const uint8_t &receiver_IDin, const uint8_t &lightsin, const uint8_t  &camerain, const uint8_t &actionin, const ustring8_t namein) const{
+ustring8_t messages::derivedMessage::sendMessage(const uint16_t &message_IDin, const uint8_t &sender_IDin, const uint8_t &receiver_IDin, const uint8_t &lightsin, const uint8_t  &camerain, const uint8_t &actionin, const ustring8_t namein) const{
     
     ustring8_t payloadin(9,' '); // Payload of message to be sent
     
@@ -58,7 +58,7 @@ ustring8_t derivedMessage::sendMessage(const uint16_t &message_IDin, const uint8
 }
 
 //Receive Message and Update members (fields)
-void derivedMessage::receiveMessage(ustring8_t net_messagein){
+void messages::derivedMessage::receiveMessage(ustring8_t net_messagein){
     
     //Throw exception if message length is not  17 bytes (136 bits)
     if (net_messagein.size() != (uint8_t) 17){
