@@ -1,8 +1,11 @@
 #include <messages/printMessage.h>
 #include <iostream>
+using namespace messages;
 
 int main(){
-
+    //messages library version
+    messages::print_version();
+    
     //Example use of classes
     //NOTE: negative numbers may be implicitly converted to uint types. It is upto the API user to ensure that correct arguments are entered
     std::cout << "--- Example usage of baseMessage Class ---"  << std::endl;

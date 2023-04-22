@@ -7,6 +7,8 @@
 
 #include "testMessage.h"
 
+using namespace messages;
+
 //Function to generate a random string of given length
 ustring8_t generate_random_ustring8_t(std::size_t length){
     const ustring8_t chars = ustring8_t((uint8_t *)"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
