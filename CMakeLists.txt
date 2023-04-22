@@ -48,14 +48,6 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     # FetchContent_MakeAvailable was added in CMake 3.14; simpler usage
     FetchContent_MakeAvailable(googletest)
-
-    #   # Docs only available if this is the main app
-#   find_package(Doxygen)
-#   if(Doxygen_FOUND)
-#     add_subdirectory(docs)
-#   else()
-#     message(STATUS "Doxygen not found, not building docs")
-#   endif()
 endif()
 
 if(DEFINED CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -86,6 +78,15 @@ add_subdirectory(example)
 
 # The testing code is here
 add_subdirectory(test)
+
+
+# check if Doxygen is installed
+find_package(Doxygen)
+if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND DOXYGEN_FOUND)
+    add_subdirectory(docs)
+else ()
+    message("Doxygen need to be installed to generate the doxygen documentation")
+endif ()
 
 
 

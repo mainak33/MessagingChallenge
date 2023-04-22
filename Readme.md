@@ -62,6 +62,7 @@ If you are using a Docker container: Build the docker container which will build
 $ docker build --no-cache -t mcimage .
 ```
 
+NOTE: After building the project the Doxygen docs for the message library may be found in ./build/docs
 ## Running an example 
 
 If you are using Windows with MinGW: After building the source on windows with CMake, run the messagingexample executable to see example usage of the messages library classes:
@@ -70,7 +71,7 @@ $ cd build/example
 $ ./messagingexample.exe
 ```
 
-If you are using a Docker container: After building the docker container, run the messagingexample executable inside the containerized application to see example usage of the messages library classes:
+If you are using a Docker container: After building the docker container, run the messagingexample executable inside the docker container to see example usage of the messages library classes:
 ```
 $ docker run --entrypoint "/bin/sh" -it mcimage
 /usr/src/MessagingChallenge/build # cd example && ./messagingexample
@@ -102,7 +103,7 @@ $ cd build/test
 $ ./runMessagingTests.exe --gtest
 ```
 
-If you are using a Docker container: After building the docker container, run the runMessagingTests inside the containerized application with the --gtest flag to run all the tests in the Google test framework:
+If you are using a Docker container: After building the docker container, run the runMessagingTests inside the container with the --gtest flag to run all the tests in the Google test framework:
 ```
 $ docker run --entrypoint "/bin/sh" -it mcimage
 /usr/src/MessagingChallenge/build # cd test && ./runMessagingTests --gtest
