@@ -1,4 +1,5 @@
 # Messaging Challenge
+
 The code herein is intended to solve a programming challenge problem involving creation and simulated transmission of messages with variable payloads over a network. The messages library contains the classes which hold the messages. The library is tested both with a native test framework and a google test framework. Instructions on how to build and install the source code with CMake and containerize example applications using Docker are also provided.
 
 ## Problem Statement
@@ -7,7 +8,6 @@ Assumptions:
 - All messages are sent and received as a stream of binary data, with each byte containing 8 bits of message content.  Bits are sent/received from MSB to LSB. 
 - All message fields are in Network Byte Order.  The code should be agnostic to endianness.
 - Please submit your header and source files only, plus the execution result print-out.  Please do not submit your executable, project files, etc.
-
  
 1.	A hypothetical protocol used to communicate with UAVs has the following common fields:
 
@@ -44,6 +44,7 @@ Assumptions:
 3.	Write a unit test framework to verify your implementation above.  Use your engineering judgment on the scope of your test cases.  A text print-out should be produced for the result of each test case.
 
 ## Building the source code for the MessagingChallenge project
+
 This code was compiled and tested with the following two environments:
 - On Win10 with g++.exe (MinGW.org GCC-6.3.0-1) 6.3.0 and CMake version 3.26.3
 - In a docker container with alpine linux, where the environment and build tools are set up dynamically
@@ -63,6 +64,7 @@ $ docker build --no-cache -t mcimage .
 ```
 
 NOTE: After building the project the Doxygen docs for the message library may be found in ./build/docs
+
 ## Running an example 
 
 If you are using Windows with MinGW: After building the source on windows with CMake, run the messagingexample executable to see example usage of the messages library classes:
@@ -110,6 +112,7 @@ $ docker run --entrypoint "/bin/sh" -it mcimage
 ```
 
 ## Installing the messages library 
+
 If you are using Windows with MinGW: To install the messages library on the system at a chosen location <install_path>, first build the project into a build directory as shown above. Then navigate to the root directory of the project and use the command:
 
 ```
@@ -122,7 +125,9 @@ If you are using a Docker container: To install the messages library on the syst
 $ docker run --entrypoint "/bin/sh" -it mcimage
 /usr/src/MessagingChallenge/build # cmake --install . --prefix <install_path>
 ```
+
 ## Consuming the messages library with a CMake project
+
 An example of how to consume the library is shown in the source code subdirectory consumer, which contains a separate example project which consumes the messages library as an external dependency. In ./consumer/CMakeLists.txt we see that the messages library may be found and linked to the consumer target as follows:
 ```
 set(CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/../install")
@@ -138,6 +143,7 @@ Here, the CMAKE_PREFIX_PATH must be set to the <install_path> where the messages
 NOTE: The Consumer project may be built using similar commands as shown for the MessagingChallenge project above, issued inside the consumer subdirectory instead of the root.
 
 ## Expected Outputs
+
 The expected output of this example usage is:
 
 ```console
