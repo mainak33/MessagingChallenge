@@ -5,8 +5,8 @@
  * @brief testMessage Class used for testing baseMessage and derivedMessage
  */
 
-#ifndef _TESTMESSAGE_
-#define _TESTMESSAGE_
+#pragma once
+
 #include <messages/derivedMessage.h>
 #include <messages/printMessage.h>
 #include <assert.h>
@@ -206,6 +206,3 @@ class testderivedMessage:  public testMessage, public ::testing::Test{
         }
         
 };
-
-
-#endif //_TESTMESSAGE_

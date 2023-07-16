@@ -5,9 +5,7 @@
  * @brief function declarations for printing message details 
  */
 
-#ifndef _PRINTMESSAGE_
-
-#define _PRINTMESSAGE_
+#pragma once
 
 #include "derivedMessage.h"
 #include <cmath>
@@ -54,4 +52,3 @@ namespace messages{
     */
     void print_last_received_derivedMessage(const derivedMessage &msg);
 }
-#endif //_PRINTMESSAGE_

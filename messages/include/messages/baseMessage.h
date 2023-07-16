@@ -5,9 +5,7 @@
  * @brief baseMessage class used for sending, receiving and storing generic message details 
  */
 
-#ifndef _BASEMESSAGE_
-
-#define _BASEMESSAGE_
+#pragma once
 
 #ifdef _WIN32
 #include <winsock.h>
@@ -102,5 +100,3 @@ namespace messages{
 
     };
 }
-#endif //_BASEMESSAGE_
-

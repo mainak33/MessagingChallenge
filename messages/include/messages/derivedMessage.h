@@ -5,8 +5,7 @@
  * @brief derivedMessage class used for sending, receiving and storing message with payload containing lights,camera, action and Name
  */
 
-#ifndef _DERIVEDMESSAGE_
-#define _DERIVEDMESSAGE_
+#pragma once
 
 #include "baseMessage.h"
 typedef bool uint1_t; //!< Used to enforce 1 bit datatype
@@ -71,5 +70,3 @@ namespace messages{
             void receiveMessage(ustring8_t net_messagein);
     };
 }
-#endif //_DERIVEDMESSAGE_
-
