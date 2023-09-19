@@ -69,8 +69,7 @@ NOTE: After building the project the Doxygen docs for the message library may be
 
 If you are using Windows with MinGW: After building the source on windows with CMake, run the messagingexample executable to see example usage of the messages library classes:
 ```
-$ cd build/example
-$ ./messagingexample.exe
+$ ./build/example/messagingexample.exe
 ```
 
 If you are using a Docker container: After building the docker container, run the messagingexample executable inside the docker container to see example usage of the messages library classes:
@@ -82,8 +81,7 @@ $ docker run --entrypoint "/bin/sh" -it mcimage
 
 If you are using Windows with MinGW: After building the source on windows with CMake, run the runMessagingTests executable without any arguments to run all the tests in the native test framework:
 ```
-$ cd build/test
-$ ./runMessagingTests.exe
+$ ./build/test/runMessagingTests.exe
 ```
 
 If you are using a Docker container: After building the docker container, run the runMessagingTests executable inside the containerized application executable without any arguments to run all the tests in the native test framework:
@@ -101,8 +99,7 @@ NOTE : To exit the docker container use:
 
 If you are using Windows with MinGW: After building the source on windows with CMake, run the runMessagingTests executable with the --gtest flag to run all the tests in the Google test framework:
 ```
-$ cd build/test
-$ ./runMessagingTests.exe --gtest
+$ ./build/test/runMessagingTests.exe --gtest
 ```
 
 If you are using a Docker container: After building the docker container, run the runMessagingTests inside the container with the --gtest flag to run all the tests in the Google test framework:
