@@ -35,25 +35,25 @@ endif()
 
 target_include_directories(messages PUBLIC 
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-                           $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/messages>)  
+                           $<INSTALL_INTERFACE:include/messages>)  
 
 # All users of this library will need at least C++11
 target_compile_features(messages PUBLIC cxx_std_11)
 
 install(TARGETS messages
         EXPORT messagesTargets
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+        RUNTIME DESTINATION bin
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        INCLUDES DESTINATION include)
 
 install(EXPORT messagesTargets
         FILE messagesTargets.cmake
         NAMESPACE messages::
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/messages")
+        DESTINATION "lib/cmake/messages")
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/messages"
-        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/messages"
+        DESTINATION "include/messages"
         FILES_MATCHING PATTERN "*.h*")
 
 include(CMakePackageConfigHelpers)
@@ -66,7 +66,7 @@ write_basic_package_version_file(
 install(FILES 
         "${CMAKE_CURRENT_SOURCE_DIR}/cmake/messagesConfig.cmake"
         "${CMAKE_CURRENT_SOURCE_DIR}/cmake/messagesConfigVersion.cmake"
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/messages")
+        DESTINATION "lib/cmake/messages")
 
 
 # IDEs should put the headers in a nice place
